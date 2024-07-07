@@ -16,11 +16,11 @@ export default function Home() {
           />
           <PatientForm />
           <div className="text-[16px] leading-[18px] font-semibold mt-20 flex justify-between">
-            <p className="flex gap-1 text-dark-600">
+            <p className="flex gap-1 text-dark-600 items-center justify-center">
               © {new Date().getFullYear()} CarePulse by{" "}
               <Link
-                href={"nikita-biichuks-portfolio.vercel.app"}
-                className="ease-in-out duration-300 transition-colors text-green-400 hover:text-green-500"
+                href={"https://nikita-biichuks-portfolio.vercel.app/"}
+                className="ease-in-out duration-300 text-sm transition-colors text-green-400 hover:text-green-500"
               >
                 Nikita Biichuk
               </Link>
