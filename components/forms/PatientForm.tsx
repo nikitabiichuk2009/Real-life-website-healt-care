@@ -20,6 +20,7 @@ import { useState } from "react";
 import formSchema from "@/lib/validation";
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
+import { createUser } from "@/lib/actions/patient.actions";
 
 export function PatientForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -45,11 +46,18 @@ export function PatientForm() {
         email: values.email,
         phone: values.phone,
       };
+
+      const user = await createUser(userData);
+
       toast({
         title: "Success",
         description: "User registered successfully.",
         className: "bg-green-500 text-white border-none",
       });
+
+      setTimeout(() => {
+        router.push(`/patients/${user?.id}/register`);
+      }, 2500);
     } catch (err) {
       console.log(err);
       setIsLoading(false);
