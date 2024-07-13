@@ -10,7 +10,6 @@ import {
 } from "./ui/form";
 import { Control } from "react-hook-form";
 import { Input } from "./ui/input";
-import { FormFieldType } from "./forms/PatientForm";
 import Image from "next/image";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
@@ -20,6 +19,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import { Checkbox } from "./ui/checkbox";
+
+enum FormFieldType {
+  INPUT = "input",
+  CHECKBOX = "checkbox",
+  PHONE_INPUT = "phoneInput",
+  TEXTAREA = "textarea",
+  DATE_PICKER = "datePicker",
+  SELECT = "select",
+  SKELETON = "skeleton",
+}
 
 interface CustomProps {
   control: Control<any>;
