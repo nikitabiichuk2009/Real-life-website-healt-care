@@ -28,6 +28,7 @@ export interface IPatient extends Document {
   privacyConsent: boolean;
   createdAt: Date;
   updatedAt: Date;
+  appointments: Schema.Types.ObjectId[];
 }
 
 // Define the Patient schema with appropriate fields and types
@@ -57,6 +58,7 @@ const PatientSchema = new Schema<IPatient>(
     treatmentConsent: { type: Boolean, required: true },
     disclosureConsent: { type: Boolean, required: true },
     privacyConsent: { type: Boolean, required: true },
+    appointments: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
   },
   {
     timestamps: true, // Automatically adds createdAt and updatedAt fields
