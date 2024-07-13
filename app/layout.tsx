@@ -3,6 +3,9 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster } from "@/components/ui/toaster";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
 const font = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -24,17 +27,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-dark-300 font-sans antialiased",
-          font.variable
-        )}
-      >
-        <ThemeProvider attribute="dark" defaultTheme="dark">
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider
+      afterSignOutUrl={"/"}
+      appearance={{
+        baseTheme: dark,
+        layout: {
+          logoImageUrl: "/assets/icons/logo-full.svg",
+          socialButtonsVariant: "iconButton",
+        },
+      }}
+    >
+      <html lang="en">
+        <body
+          className={cn(
+            "min-h-screen bg-dark-300 font-sans antialiased",
+            font.variable
+          )}
+        >
+          <ThemeProvider attribute="dark" defaultTheme="dark">
+            <Toaster />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
