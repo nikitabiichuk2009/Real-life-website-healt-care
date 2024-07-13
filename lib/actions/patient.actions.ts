@@ -1,27 +1,76 @@
 "use server";
 
-import { users } from "../appwrite.config";
-import { ID, Query } from "node-appwrite";
-import { parseStringify } from "../utils";
+import Patient from "../database/patient.model";
+import { connectToDB } from "../mongoose";
 
-export const createUser = async (user: CreateUserParams) => {
+interface CreatePatientParams {
+  clerkId: string;
+  fullName: string;
+  email: string;
+  image: string;
+}
+
+export const createPatient = async ({
+  clerkId,
+  fullName,
+  email,
+  image,
+}: CreatePatientParams) => {
   try {
-    const newUser = await users.create(
-      ID.unique(),
-      user.email,
-      user.phone,
-      undefined,
-      user.name
-    );
+    await connectToDB();
+    const newPatient = await Patient.create({
+      clerkId,
+      fullName,
+      email,
+      image,
+    });
+    return newPatient;
+  } catch (error) {
+    console.error("Error creating patient:", error);
+    throw new Error("Error creating patient");
+  }
+};
 
-    console.log({ newUser });
-    return parseStringify({ newUser });
-  } catch (error: any) {
-    console.log(error);
-    if (error && error?.code === 409) {
-      const documents = await users.list([Query.equal("email", [user.email])]);
-      return documents?.users[0];
+interface UpdatePatientParams {
+  clerkId: string;
+  updateData: Partial<{
+    fullName: string;
+    email: string;
+    image: string;
+  }>;
+}
+
+export const updatePatient = async ({
+  clerkId,
+  updateData,
+}: UpdatePatientParams) => {
+  try {
+    await connectToDB();
+    const updatedPatient = await Patient.findOneAndUpdate(
+      { clerkId },
+      { $set: updateData },
+      { new: true } // Return the updated document
+    );
+    if (!updatedPatient) {
+      throw new Error("Patient not found");
     }
-    throw new Error("Error creating or recognizing the user.");
+    return updatedPatient;
+  } catch (error) {
+    console.error("Error updating patient:", error);
+    throw new Error("Error updating patient");
+  }
+};
+
+export const deletePatient = async (clerkId: string) => {
+  try {
+    await connectToDB();
+    const deletedPatient = await Patient.findOneAndDelete({ clerkId });
+    if (!deletedPatient) {
+      throw new Error("Patient not found");
+    }
+    return deletedPatient;
+  } catch (error) {
+    console.error("Error deleting patient:", error);
+    throw new Error("Error deleting patient");
   }
 };
