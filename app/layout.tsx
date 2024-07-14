@@ -4,7 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
 const font = Plus_Jakarta_Sans({
@@ -46,6 +46,9 @@ export default function RootLayout({
         >
           <ThemeProvider attribute="dark" defaultTheme="dark">
             <Toaster />
+            <div className="fixed top-4 left-4">
+              <UserButton />
+            </div>
             {children}
           </ThemeProvider>
         </body>

@@ -1,14 +1,24 @@
 import NoResults from "@/components/NoResults";
 import { RegisterFrom } from "@/components/forms/Register";
 import { getPatientByClerkId } from "@/lib/actions/patient.actions";
+import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const Register = async ({ params: { id } }: SearchParamProps) => {
   let user;
+  const { userId } = auth();
   try {
     user = await getPatientByClerkId(id);
+    if (userId !== user.clerkId) {
+      <NoResults
+        title="Access Denied"
+        description="You do not have permission to view this data."
+        buttonTitle="Go Back"
+        href="/"
+      />;
+    }
   } catch (err) {
     console.log(err);
     return (

@@ -31,7 +31,7 @@ import {
 import { Label } from "../ui/label";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
-import FileUploader from "../FileUploader";
+// import FileUploader from "../FileUploader";
 
 export function RegisterFrom({ user }: { user: any }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +65,7 @@ export function RegisterFrom({ user }: { user: any }) {
 
     try {
       await updatePatient({ clerkId: user.clerkId, updateData: values });
-      router.push(`/patients/${user?.$id}/new-appointment`);
+      router.push(`/patients/${user.clerkId}/new-appointment`);
     } catch (err) {
       console.log(err);
       setIsLoading(false);
@@ -96,17 +96,17 @@ export function RegisterFrom({ user }: { user: any }) {
           </div>
         </section>
 
-        <CustomFormField
+        {/* <CustomFormField
           fieldType={FormFieldType.INPUT}
           control={form.control}
-          name="name"
+          name="fullName"
           label="Full name"
           placeholder="John Doe"
           iconSrc="/assets/icons/user.svg"
           iconAlt="user"
-        />
+        /> */}
 
-        <div className="flex flex-col gap-6 xl:flex-row xl:justify-between">
+        {/* <div className="flex flex-col gap-6 xl:flex-row xl:justify-between">
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             control={form.control}
@@ -124,7 +124,15 @@ export function RegisterFrom({ user }: { user: any }) {
             label="Phone"
             className="flex-grow"
           />
-        </div>
+        </div> */}
+
+        <CustomFormField
+          fieldType={FormFieldType.PHONE_INPUT}
+          control={form.control}
+          name="phone"
+          label="Phone"
+          className="flex-grow"
+        />
 
         <div className="flex flex-col gap-6 xl:flex-row xl:justify-between">
           <CustomFormField
@@ -250,24 +258,6 @@ export function RegisterFrom({ user }: { user: any }) {
           />
         </div>
 
-        <div className="flex flex-col gap-6 xl:flex-row xl:justify-between">
-          <CustomFormField
-            fieldType={FormFieldType.TEXTAREA}
-            control={form.control}
-            name="allergies"
-            label="Allergies (if any)"
-            placeholder="Peanuts, Penicillin, Pollen"
-            className="flex-grow"
-          />
-          <CustomFormField
-            fieldType={FormFieldType.TEXTAREA}
-            control={form.control}
-            name="currentMedication"
-            label="Current medications (if any)"
-            placeholder="Ibuprofen 200mg, Levothyroxine 50mcg"
-            className="flex-grow"
-          />
-        </div>
         <div className="flex flex-col gap-6 xl:flex-row xl:justify-between">
           <CustomFormField
             fieldType={FormFieldType.TEXTAREA}

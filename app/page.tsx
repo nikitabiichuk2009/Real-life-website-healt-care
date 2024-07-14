@@ -21,7 +21,7 @@ export default function Home() {
             <p className="text-dark-700">Get Started with appointments</p>
           </section>
           {userId ? (
-            <Link href={`/patients/${userId}/register`}>
+            <Link href={`/patients/${userId}/new-appointment`}>
               <Button className="shad-primary-btn w-full">Get Started</Button>
             </Link>
           ) : (

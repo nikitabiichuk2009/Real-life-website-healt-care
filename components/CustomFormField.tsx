@@ -179,7 +179,7 @@ const CustomFormField = (props: CustomProps) => {
     "pastMedicalHistory",
     "identificationType",
     "identificationNumber",
-    "identificationDocument",
+    "identificationDocumentUrl",
   ].includes(name);
   return (
     <div className={className}>

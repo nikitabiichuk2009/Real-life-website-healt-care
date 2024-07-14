@@ -5,6 +5,7 @@ import { parseStringify } from "./../utils";
 import Patient from "../database/patient.model";
 import { connectToDB } from "../mongoose";
 import Appointment from "../database/appointment.model";
+import { revalidatePath } from "next/cache";
 
 interface CreatePatientParams {
   clerkId: string;
@@ -36,11 +37,7 @@ export const createPatient = async ({
 
 interface UpdatePatientParams {
   clerkId: string;
-  updateData: Partial<{
-    fullName: string;
-    email: string;
-    image: string;
-  }>;
+  updateData: object;
 }
 
 export const updatePatient = async ({
@@ -57,7 +54,7 @@ export const updatePatient = async ({
     if (!updatedPatient) {
       throw new Error("Patient not found");
     }
-    return updatedPatient;
+    revalidatePath(`/patients${updatedPatient.clerkId}/register`);
   } catch (error) {
     console.error("Error updating patient:", error);
     throw new Error("Error updating patient");
