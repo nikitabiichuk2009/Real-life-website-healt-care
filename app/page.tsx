@@ -33,7 +33,7 @@ export default function Home() {
   ) => {
     e.preventDefault();
     if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
-      router.push("/admin");
+      router.push("/admin-manage-appointments-here");
     } else {
       setError("Invalid passkey. Please try again.");
     }

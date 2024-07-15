@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getPatientByClerkId } from "@/lib/actions/patient.actions";
 import NoResults from "@/components/NoResults";
+import { Doctors } from "@/constants";
 
 export default async function Appointments() {
   const { userId } = auth();
@@ -30,6 +31,7 @@ export default async function Appointments() {
       );
     }
   }
+
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container my-auto lg:pl-12 lg:pr-96">
@@ -49,42 +51,55 @@ export default async function Appointments() {
           </section>
           <div className="flex flex-col gap-6">
             {appointments.length > 0 ? (
-              appointments.map((appointment: any) => (
-                <div
-                  key={appointment._id}
-                  className="p-4 mb-4 rounded-xl border-green-500 border-2"
-                >
-                  <h2 className="text-xl font-bold">
-                    Appointment with {appointment.primaryPhysician}
-                  </h2>
-                  <p>
-                    <strong>Date:</strong>{" "}
-                    {new Date(appointment.schedule).toLocaleString()}
-                  </p>
-                  <p>
-                    <strong>Reason:</strong> {appointment.reason}
-                  </p>
-                  {appointment.note && (
+              appointments.map((appointment: any) => {
+                const doctor = Doctors.find(
+                  (doc) => doc.name === appointment.primaryPhysician
+                );
+                return (
+                  <div
+                    key={appointment._id}
+                    className="p-4 mb-4 rounded-xl border-green-500 border-2 flex flex-col gap-1"
+                  >
+                    <div className="text-xl font-bold flex flex-row gap-2">
+                      Appointment with{" "}
+                      <Image
+                        // @ts-ignore
+                        src={doctor?.image}
+                        alt="doctor"
+                        width={30}
+                        height={30}
+                      />
+                      {appointment.primaryPhysician}
+                    </div>
                     <p>
-                      <strong>Note:</strong> {appointment.note}
+                      <strong>Date:</strong>{" "}
+                      {new Date(appointment.schedule).toLocaleString()}
                     </p>
-                  )}
-                  <div className="mt-4 flex justify-between">
-                    <Link
-                      href={`/appointments/${appointment._id}/edit`}
-                      className="text-blue-500 hover:underline ease-in-out transition-colors duration-200"
-                    >
-                      Edit
-                    </Link>
-                    <Link
-                      href={`/appointments/${appointment._id}/cancel`}
-                      className="text-red-500 hover:underline ease-in-out transition-colors duration-200"
-                    >
-                      Cancel
-                    </Link>
+                    <p>
+                      <strong>Reason:</strong> {appointment.reason}
+                    </p>
+                    {appointment.note && (
+                      <p>
+                        <strong>Note:</strong> {appointment.note}
+                      </p>
+                    )}
+                    <div className="mt-4 flex justify-between">
+                      <Link
+                        href={`/appointments/${appointment._id}/edit`}
+                        className="text-blue-500 hover:underline ease-in-out transition-colors duration-200"
+                      >
+                        Edit
+                      </Link>
+                      <Link
+                        href={`/appointments/${appointment._id}/cancel`}
+                        className="text-red-500 hover:underline ease-in-out transition-colors duration-200"
+                      >
+                        Cancel
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <p>No appointments found.</p>
             )}

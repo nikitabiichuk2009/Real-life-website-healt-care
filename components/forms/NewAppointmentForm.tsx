@@ -35,7 +35,7 @@ export function AppointmentForm({
   appointment,
 }: {
   user: any;
-  type: "create" | "cancel" | "schedule" | "edit";
+  type: "create" | "cancel" | "schedule" | "edit" | "cancel_by_the_user";
   appointment?: any;
 }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +50,9 @@ export function AppointmentForm({
     case "cancel":
       status = "cancelled";
       break;
+    case "cancel_by_the_user":
+      status = "cancelled_by_the_user";
+      break;
     case "create":
     case "edit":
       status = "pending";
@@ -62,7 +65,7 @@ export function AppointmentForm({
     resolver: zodResolver(appointmentSchema),
     defaultValues: {
       primaryPhysician: appointment?.primaryPhysician || "",
-      schedule: appointment?.schedule || new Date(),
+      schedule: new Date(appointment?.schedule) || new Date(),
       cancellationReason: appointment?.cancellationReason || "",
       reason: appointment?.reason || "",
       note: appointment?.note || "",

@@ -103,3 +103,33 @@ export const getAppointmentById = async (appointmentId: string) => {
     throw new Error("Error fetching appointment");
   }
 };
+
+export const getAppointmentStats = async () => {
+  try {
+    await connectToDB();
+
+    const scheduledCount = await Appointment.countDocuments({
+      status: "scheduled",
+    });
+    const pendingCount = await Appointment.countDocuments({
+      status: "pending",
+    });
+    const cancelledCount = await Appointment.countDocuments({
+      status: { $in: ["cancelled", "cancelled_by_the_user"] },
+    });
+
+    const allLatestAppointments = await Appointment.find()
+      .sort({ schedule: -1 })
+      .populate("patient");
+
+    return parseStringify({
+      scheduledCount,
+      pendingCount,
+      cancelledCount,
+      allLatestAppointments,
+    });
+  } catch (error) {
+    console.error("Error fetching appointment statistics:", error);
+    throw new Error("Error fetching appointment statistics");
+  }
+};
