@@ -3,6 +3,7 @@ import { SignUp } from "@clerk/nextjs";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const SigUpPage = () => {
   const router = useRouter();
@@ -18,6 +19,25 @@ const SigUpPage = () => {
       <SignUp
         forceRedirectUrl={process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL}
       />
+      <div className="flex flex-col items-center">
+        <div className="text-[16px] leading-[18px] font-semibold mt-20 flex justify-between">
+          <p className="flex gap-1 text-dark-600 items-center justify-center">
+            © {new Date().getFullYear()} CarePulse by{" "}
+            <Link
+              href={"https://nikita-biichuks-portfolio.vercel.app/"}
+              className="ease-in-out duration-300 text-sm transition-colors text-green-400 hover:text-green-500"
+            >
+              Nikita Biichuk
+            </Link>
+          </p>
+        </div>
+        <Link
+          href="/privacy-policy"
+          className="mt-12 ease-in-out duration-300 text-[20px] text-center transition-colors text-green-400 hover:text-green-500"
+        >
+          Privacy and policy
+        </Link>
+      </div>
     </main>
   );
 };

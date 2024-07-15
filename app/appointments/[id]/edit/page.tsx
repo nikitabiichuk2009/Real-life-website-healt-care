@@ -1,56 +1,46 @@
 import NoResults from "@/components/NoResults";
 import { AppointmentForm } from "@/components/forms/NewAppointmentForm";
+import { getAppointmentById } from "@/lib/actions/appointment.action";
 import { getPatientByClerkId } from "@/lib/actions/patient.actions";
 import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
-export default async function NewAppointment({
+export default async function EditAppointment({
   params: { id },
-}: SearchParamProps) {
-  let user;
+}: {
+  params: { id: string };
+}) {
   const { userId } = auth();
+
+  let user, appointment;
+
   try {
-    user = await getPatientByClerkId(id);
-    if (userId !== user.clerkId) {
-      <NoResults
-        title="Access Denied"
-        description="You do not have permission to view this data."
-        buttonTitle="Go Back"
-        href="/"
-      />;
-    }
+    appointment = await getAppointmentById(id);
+    user = await getPatientByClerkId(appointment.clerkUserId);
   } catch (err) {
     console.log(err);
     return (
       <NoResults
-        title="Error Loading User"
+        title="Error Loading Data"
         description="There was an error loading your data. Please try again."
         buttonTitle="Go Back"
         href="/"
       />
     );
   }
-  const requiredFields = [
-    "fullName",
-    "email",
-    "phone",
-    "birthDate",
-    "gender",
-    "address",
-    "occupation",
-    "emergencyContactName",
-    "emergencyContactNumber",
-    "primaryPhysician",
-    "insuranceProvider",
-    "insurancePolicyNumber",
-  ];
 
-  const missingFields = requiredFields.filter((field) => !user[field]);
-  if (missingFields.length > 0) {
-    redirect(`/patients/${user.clerkId}/register`);
+  if (appointment.clerkUserId !== userId) {
+    return (
+      <NoResults
+        title="Access Denied"
+        description="You do not have permission to view this data."
+        buttonTitle="Go Back"
+        href="/"
+      />
+    );
   }
+
   return (
     <div className="flex h-screen max-h-screen">
       <section className="remove-scrollbar container lg:pl-12 lg:pr-96">
@@ -64,7 +54,7 @@ export default async function NewAppointment({
               alt="logo"
             />
           </Link>
-          <AppointmentForm user={user} type="create" />
+          <AppointmentForm user={user} type="edit" appointment={appointment} />
           <div className="flex flex-col items-center">
             <div className="text-[16px] leading-[18px] font-semibold mt-20 flex justify-between">
               <p className="flex gap-1 text-dark-600 items-center justify-center">

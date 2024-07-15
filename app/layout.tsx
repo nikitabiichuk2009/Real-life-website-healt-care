@@ -46,10 +46,11 @@ export default function RootLayout({
         >
           <ThemeProvider attribute="dark" defaultTheme="dark">
             <Toaster />
-            <div className="fixed top-4 left-4">
+            <div className="fixed left-0 top-0 z-30 flex w-full items-center justify-between px-6 py-3 bg-dark-400">
+              <div></div> {/* This empty div will take the left space */}
               <UserButton />
             </div>
-            {children}
+            <div className="mt-12">{children}</div>
           </ThemeProvider>
         </body>
       </html>

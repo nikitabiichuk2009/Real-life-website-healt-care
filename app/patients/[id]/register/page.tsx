@@ -33,15 +33,17 @@ const Register = async ({ params: { id } }: SearchParamProps) => {
 
   return (
     <div className="flex h-screen max-h-screen">
-      <section className="remove-scrollbar container my-auto lg:pl-12 lg:pr-64">
+      <section className="remove-scrollbar container my-auto lg:pl-12 lg:pr-96">
         <div className="sub-container max-w-[860px] flex-1 flex-col py-10">
-          <Image
-            src={"/assets/icons/logo-full.svg"}
-            height={1000}
-            width={1000}
-            className="mb-12 h-10 w-fit"
-            alt="logo"
-          />
+          <Link href="/">
+            <Image
+              src={"/assets/icons/logo-full.svg"}
+              height={1000}
+              width={1000}
+              className="mb-12 h-10 w-fit"
+              alt="logo"
+            />
+          </Link>
           <RegisterFrom user={user} />
           <div className="text-[16px] leading-[18px] font-semibold mt-20 flex justify-between items-center">
             <p className="flex gap-1 text-dark-600 items-center justify-center">
@@ -53,12 +55,6 @@ const Register = async ({ params: { id } }: SearchParamProps) => {
                 Nikita Biichuk
               </Link>
             </p>
-            <Link
-              href="/?admin=true"
-              className="ease-in-out duration-300 text-[20px] text-center transition-colors text-green-400 hover:text-green-500"
-            >
-              Admin
-            </Link>
           </div>
           <Link
             href="/privacy-policy"

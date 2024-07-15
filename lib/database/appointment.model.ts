@@ -14,13 +14,13 @@ export interface IAppointment extends Document {
 
 // Define the Appointment schema with appropriate fields and types
 const AppointmentSchema = new Schema({
-  patient: { type: Schema.Types.ObjectId, ref: "Patient", required: true },
-  schedule: { type: Date, required: true },
-  status: { type: String, required: true },
-  primaryPhysician: { type: String, required: true },
-  reason: { type: String, required: true },
-  note: { type: String, required: true },
-  clerkUserId: { type: String, required: true },
+  patient: { type: Schema.Types.ObjectId, ref: "Patient" },
+  schedule: { type: Date },
+  status: { type: String },
+  primaryPhysician: { type: String },
+  reason: { type: String },
+  note: { type: String },
+  clerkUserId: { type: String },
   cancellationReason: { type: String, default: null },
 });
 
