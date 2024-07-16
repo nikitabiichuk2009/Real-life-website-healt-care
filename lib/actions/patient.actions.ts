@@ -1,7 +1,11 @@
 "use server";
 
+import { parseStringify } from "./../utils";
+
 import Patient from "../database/patient.model";
 import { connectToDB } from "../mongoose";
+import Appointment from "../database/appointment.model";
+import { revalidatePath } from "next/cache";
 
 interface CreatePatientParams {
   clerkId: string;
@@ -33,11 +37,7 @@ export const createPatient = async ({
 
 interface UpdatePatientParams {
   clerkId: string;
-  updateData: Partial<{
-    fullName: string;
-    email: string;
-    image: string;
-  }>;
+  updateData: object;
 }
 
 export const updatePatient = async ({
@@ -54,7 +54,7 @@ export const updatePatient = async ({
     if (!updatedPatient) {
       throw new Error("Patient not found");
     }
-    return updatedPatient;
+    revalidatePath(`/patients${updatedPatient.clerkId}/register`);
   } catch (error) {
     console.error("Error updating patient:", error);
     throw new Error("Error updating patient");
@@ -64,13 +64,37 @@ export const updatePatient = async ({
 export const deletePatient = async (clerkId: string) => {
   try {
     await connectToDB();
+    // Find the patient by clerkId
+    const patient = await Patient.findOne({ clerkId });
+    if (!patient) {
+      throw new Error("Patient not found");
+    }
+
+    // Delete all appointments related to the patient
+    await Appointment.deleteMany({ _id: { $in: patient.appointments } });
+
+    // Delete the patient
     const deletedPatient = await Patient.findOneAndDelete({ clerkId });
     if (!deletedPatient) {
-      throw new Error("Patient not found");
+      throw new Error("Error deleting patient");
     }
     return deletedPatient;
   } catch (error) {
     console.error("Error deleting patient:", error);
     throw new Error("Error deleting patient");
+  }
+};
+
+export const getPatientByClerkId = async (clerkId: string) => {
+  try {
+    await connectToDB();
+    const patient = await Patient.findOne({ clerkId }).populate("appointments");
+    if (!patient) {
+      throw new Error("Patient not found");
+    }
+    return parseStringify(patient);
+  } catch (error) {
+    console.error("Error fetching patient:", error);
+    throw new Error("Error fetching patient");
   }
 };

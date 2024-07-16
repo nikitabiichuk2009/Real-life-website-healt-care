@@ -25,11 +25,11 @@ const formSchema = z.object({
 export default formSchema;
 
 export const PatientFormValidation = z.object({
-  name: z
-    .string()
-    .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must be at most 50 characters"),
-  email: z.string().email("Invalid email address"),
+  // fullName: z
+  //   .string()
+  //   .min(2, "Full name must be at least 2 characters")
+  //   .max(50, "Full name must be at most 50 characters"),
+  // email: z.string().email("Invalid email address"),
   phone: z
     .string()
     .refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number"),
@@ -70,7 +70,12 @@ export const PatientFormValidation = z.object({
   pastMedicalHistory: z.string().optional(),
   identificationType: z.string().optional(),
   identificationNumber: z.string().optional(),
-  identificationDocument: z.custom<File[]>().optional(),
+  identificationDocumentUrl: z
+    .string()
+    .optional()
+    .refine((val: any) => !val || /^https?:\/\/[^\s/$.?#].[^\s]*$/.test(val), {
+      message: "Link must be a valid URL",
+    }),
   treatmentConsent: z
     .boolean()
     .default(false)
@@ -126,6 +131,8 @@ export function getAppointmentSchema(type: string) {
     case "create":
       return CreateAppointmentSchema;
     case "cancel":
+      return CancelAppointmentSchema;
+    case "cancel_by_the_user":
       return CancelAppointmentSchema;
     default:
       return ScheduleAppointmentSchema;

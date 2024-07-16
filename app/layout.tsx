@@ -4,7 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
 const font = Plus_Jakarta_Sans({
@@ -46,7 +46,11 @@ export default function RootLayout({
         >
           <ThemeProvider attribute="dark" defaultTheme="dark">
             <Toaster />
-            {children}
+            <div className="fixed left-0 top-0 z-30 flex w-full items-center justify-between px-6 py-3 bg-dark-400">
+              <div></div> {/* This empty div will take the left space */}
+              <UserButton />
+            </div>
+            <div className="mt-12">{children}</div>
           </ThemeProvider>
         </body>
       </html>

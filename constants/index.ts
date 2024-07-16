@@ -1,9 +1,6 @@
 export const GenderOptions = ["Male", "Female", "Other"];
 
 export const PatientFormDefaultValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
   phone: "",
   birthDate: new Date(Date.now()),
   gender: "Male",
@@ -20,7 +17,7 @@ export const PatientFormDefaultValues = {
   pastMedicalHistory: "",
   identificationType: "Birth Certificate",
   identificationNumber: "",
-  identificationDocument: [],
+  identificationDocumentUrl: "",
   treatmentConsent: false,
   disclosureConsent: false,
   privacyConsent: false,
@@ -83,4 +80,5 @@ export const StatusIcon = {
   scheduled: "/assets/icons/check.svg",
   pending: "/assets/icons/pending.svg",
   cancelled: "/assets/icons/cancelled.svg",
+  cancelled_by_the_user: "/assets/icons/cancelled.svg",
 };
