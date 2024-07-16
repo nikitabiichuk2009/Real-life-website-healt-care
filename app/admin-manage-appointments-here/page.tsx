@@ -48,7 +48,9 @@ const Admin = async () => {
             className="h-8 w-fit"
           />
         </Link>
-        <p className="font-semibold text-[20px]">Admin Dashboard</p>
+        <p className="font-semibold text:[16px] whitespace-nowrap md:text-[20px]">
+          Admin Dashboard
+        </p>
       </header>
       <main className="admin-main">
         <section className="w-full space-y-4">
