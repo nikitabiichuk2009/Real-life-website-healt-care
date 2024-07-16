@@ -52,12 +52,12 @@ export default function Home() {
             />
           </Link>
 
-          <section className="mb-12 space-y-4">
+          <section className="mb-20 md:mb-12 space-y-4">
             <h1 className="text-3xl font-semibold">Hi there 👋</h1>
-            <p className="text-dark-700 flex flex-row gap-1">
+            <p className="text-dark-700 flex flex-col gap-2 lg:flex-row md:gap-1 whitespace-nowrap">
               Get Started with appointments
               {userId && (
-                <p className="text-dark-700">
+                <p className="text-dark-700 whitespace-nowrap">
                   or{" "}
                   <Link
                     href="/my-appointments"
