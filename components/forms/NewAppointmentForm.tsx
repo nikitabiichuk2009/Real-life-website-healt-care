@@ -276,26 +276,26 @@ export function AppointmentForm({
               }`}
               className="flex-grow"
             />
-            <div className="flex flex-col gap-6 xl:flex-row xl:justify-between">
-              <CustomFormField
-                fieldType={FormFieldType.TEXTAREA}
-                control={form.control}
-                name="reason"
-                disabled={type === "schedule"}
-                label="Reason for appointment"
-                placeholder="Annual montly check-up"
-                className="flex-grow"
-              />
-              <CustomFormField
-                fieldType={FormFieldType.TEXTAREA}
-                control={form.control}
-                name="note"
-                disabled={type === "schedule"}
-                label="Additional comments/notes (optional)"
-                placeholder="Prefer afternoon appointments, if possible"
-                className="flex-grow"
-              />
-            </div>
+            {type !== "schedule" && (
+              <div className="flex flex-col gap-6 xl:flex-row xl:justify-between">
+                <CustomFormField
+                  fieldType={FormFieldType.TEXTAREA}
+                  control={form.control}
+                  name="reason"
+                  label="Reason for appointment"
+                  placeholder="Annual montly check-up"
+                  className="flex-grow"
+                />
+                <CustomFormField
+                  fieldType={FormFieldType.TEXTAREA}
+                  control={form.control}
+                  name="note"
+                  label="Additional comments/notes (optional)"
+                  placeholder="Prefer afternoon appointments, if possible"
+                  className="flex-grow"
+                />
+              </div>
+            )}
           </>
         )}
         {(type === "cancel" || type === "cancel_by_the_user") && (
