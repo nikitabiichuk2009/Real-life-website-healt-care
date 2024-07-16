@@ -30,7 +30,7 @@ export default function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    initialState: { pagination: { pageSize: 5 } }, // Set the page size here
+    initialState: { pagination: { pageSize: 10 } }, // Set the page size here
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
