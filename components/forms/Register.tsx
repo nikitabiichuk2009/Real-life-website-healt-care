@@ -130,7 +130,7 @@ export function RegisterFrom({ user }: { user: any }) {
           fieldType={FormFieldType.PHONE_INPUT}
           control={form.control}
           name="phone"
-          label="Phone"
+          label="Phone (must be unique)"
           className="flex-grow"
         />
 

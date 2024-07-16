@@ -132,6 +132,8 @@ export function getAppointmentSchema(type: string) {
       return CreateAppointmentSchema;
     case "cancel":
       return CancelAppointmentSchema;
+    case "cancel_by_the_user":
+      return CancelAppointmentSchema;
     default:
       return ScheduleAppointmentSchema;
   }

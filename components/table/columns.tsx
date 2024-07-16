@@ -5,10 +5,11 @@ import StatusBadge from "../StatusBadge";
 import { formatDateTime } from "@/lib/utils";
 import { Doctors } from "@/constants";
 import Image from "next/image";
+import AppointmentModal from "../AppointmentModal";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Payment = {
+export type Appointment = {
   id: string;
   patient: {
     image: string;
@@ -19,10 +20,11 @@ export type Payment = {
   schedule: Date;
   primaryPhysician: string;
   reason: string;
-  cancelletionReason: string;
+  cancellationReason: string;
+  note: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: "ID",
     cell: ({ row }) => <p className="text-14-medium">{row.index + 1}</p>,
@@ -53,7 +55,7 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <div className="min-w-[115px]">
+      <div className="min-w-[200px]">
         <StatusBadge status={row.original.status} />
       </div>
     ),
@@ -62,7 +64,7 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: "schedule",
     header: "Date",
     cell: ({ row }) => (
-      <p className="text-14-regular min-w-[100px]">
+      <p className="text-14-regular min-w-[150px] whitespace-nowrap">
         {formatDateTime(row.original.schedule).dateTime}
       </p>
     ),
@@ -77,12 +79,21 @@ export const columns: ColumnDef<Payment>[] = [
     ),
   },
   {
-    accessorKey: "cancelletionReason",
+    accessorKey: "note",
+    header: "Note",
+    cell: ({ row }) => (
+      <p className="text-14-regular min-w-[200px] h-fit">
+        {` ${row.original.note || "No additional note provided"}`}
+      </p>
+    ),
+  },
+  {
+    accessorKey: "cancellationReason",
     header: "Cancelletion reason",
     cell: ({ row }) => (
       <p className="text-14-regular min-w-[200px] h-fit">
         {`${
-          row.original.cancelletionReason || "This appointment is not cancelled"
+          row.original.cancellationReason || "This appointment is not cancelled"
         }`}
       </p>
     ),
@@ -108,6 +119,30 @@ export const columns: ColumnDef<Payment>[] = [
           <p className="whitespace-nowrap">
             Dr. {row.original.primaryPhysician}
           </p>
+        </div>
+      );
+    },
+  },
+  {
+    id: "actions",
+    header: () => <div className="pl-6">Actions</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="flex agap-1 pl-6">
+          <AppointmentModal
+            type="schedule"
+            user={row.original.patient}
+            appointment={row.original}
+            title="Schedule an Appointment"
+            desc="Please confirm the following details to schedule an appointment"
+          />
+          <AppointmentModal
+            type="cancel"
+            user={row.original.patient}
+            appointment={row.original}
+            title="Cancel an Appointment"
+            desc="Are you sure you want to cancel this appointment?"
+          />
         </div>
       );
     },

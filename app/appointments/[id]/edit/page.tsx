@@ -54,7 +54,13 @@ export default async function EditAppointment({
               alt="logo"
             />
           </Link>
-          <AppointmentForm user={user} type="edit" appointment={appointment} />
+          <AppointmentForm
+            user={user}
+            type="edit"
+            appointment={appointment}
+            title="Edit an appointment"
+            desc="You can edit your appointment here"
+          />
           <div className="flex flex-col items-center">
             <div className="text-[16px] leading-[18px] font-semibold mt-20 flex justify-between">
               <p className="flex gap-1 text-dark-600 items-center justify-center">

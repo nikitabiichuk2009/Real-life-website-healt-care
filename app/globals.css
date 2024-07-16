@@ -187,11 +187,11 @@
   }
 
   .shad-danger-btn {
-    @apply bg-red-700 ease-linear duration-300 transition-colors hover:bg-red-800 text-white !important;
+    @apply bg-red-700 font-semibold ease-linear duration-300 transition-colors hover:bg-red-800 text-white !important;
   }
 
   .shad-gray-btn {
-    @apply border border-dark-500 cursor-pointer bg-dark-400 text-white !important;
+    @apply border border-dark-500 ease-in-out transition-colors duration-200 hover:bg-dark-300 cursor-pointer bg-dark-400 text-white !important;
   }
 
   .shad-input-label {

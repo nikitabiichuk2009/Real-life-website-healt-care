@@ -34,11 +34,11 @@ export interface IPatient extends Document {
 // Define the Patient schema with appropriate fields and types
 const PatientSchema = new Schema<IPatient>(
   {
-    clerkId: { type: String },
+    clerkId: { type: String, unique: true },
     fullName: { type: String },
     image: { type: String },
-    email: { type: String },
-    phone: { type: String },
+    email: { type: String, unique: true },
+    phone: { type: String, unique: true },
     birthDate: { type: Date },
     gender: { type: String },
     address: { type: String },

@@ -64,7 +64,12 @@ export default async function NewAppointment({
               alt="logo"
             />
           </Link>
-          <AppointmentForm user={user} type="create" />
+          <AppointmentForm
+            user={user}
+            type="create"
+            desc=""
+            title="New appointment"
+          />
           <div className="flex flex-col items-center">
             <div className="text-[16px] leading-[18px] font-semibold mt-20 flex justify-between">
               <p className="flex gap-1 text-dark-600 items-center justify-center">

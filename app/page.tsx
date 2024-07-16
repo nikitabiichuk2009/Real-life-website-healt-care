@@ -54,15 +54,18 @@ export default function Home() {
 
           <section className="mb-12 space-y-4">
             <h1 className="text-3xl font-semibold">Hi there 👋</h1>
-            <p className="text-dark-700">
-              Get Started with appointments or{" "}
+            <p className="text-dark-700 flex flex-row gap-1">
+              Get Started with appointments
               {userId && (
-                <Link
-                  href="/my-appointments"
-                  className="ease-in-out duration-300 transition-colors text-green-400 hover:text-green-500"
-                >
-                  view your appoinments
-                </Link>
+                <p className="text-dark-700">
+                  or{" "}
+                  <Link
+                    href="/my-appointments"
+                    className="ease-in-out duration-300 transition-colors text-green-400 hover:text-green-500"
+                  >
+                    view your appoinments
+                  </Link>
+                </p>
               )}
             </p>
           </section>

@@ -15,8 +15,11 @@ import { Doctors } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
 import {
+  cancelAppointmentByAdmin,
+  cancelAppointmentByUser,
   createAppointment,
   editAppointment,
+  scheduleAppointment,
 } from "@/lib/actions/appointment.action";
 
 export enum FormFieldType {
@@ -33,10 +36,16 @@ export function AppointmentForm({
   user,
   type,
   appointment,
+  title,
+  desc,
+  setOpen,
 }: {
   user: any;
   type: "create" | "cancel" | "schedule" | "edit" | "cancel_by_the_user";
   appointment?: any;
+  title: string;
+  desc: string;
+  setOpen?: (open: boolean) => void;
 }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -65,8 +74,10 @@ export function AppointmentForm({
     resolver: zodResolver(appointmentSchema),
     defaultValues: {
       primaryPhysician: appointment?.primaryPhysician || "",
-      schedule: new Date(appointment?.schedule) || new Date(),
-      cancellationReason: appointment?.cancellationReason || "",
+      schedule: appointment?.schedule
+        ? new Date(appointment.schedule)
+        : new Date(),
+      cancellationReason: "",
       reason: appointment?.reason || "",
       note: appointment?.note || "",
     },
@@ -128,6 +139,81 @@ export function AppointmentForm({
           className: "bg-red-500 text-white border-none",
         });
       }
+    } else if (type === "cancel") {
+      try {
+        await cancelAppointmentByAdmin({
+          appointmentId: appointment._id,
+          cancellationReason: values.cancellationReason || "",
+          email: user.email,
+        });
+        setIsLoading(false);
+        toast({
+          title: "Success",
+          description: "Successfully cancelled this appointment.",
+          className: "bg-green-500 text-white border-none",
+        });
+        // @ts-ignore
+        setOpen(false);
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+        toast({
+          title: "Error",
+          description:
+            "There was an error cancelling the appointment. Please try again.",
+          className: "bg-red-500 text-white border-none",
+        });
+      }
+    } else if (type === "cancel_by_the_user") {
+      try {
+        await cancelAppointmentByUser({
+          appointmentId: appointment._id,
+          cancellationReason: values.cancellationReason || "",
+        });
+        setIsLoading(false);
+        toast({
+          title: "Success",
+          description: "Successfully cancelled this appointment.",
+          className: "bg-green-500 text-white border-none",
+        });
+        // @ts-ignore
+        setOpen(false);
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+        toast({
+          title: "Error",
+          description:
+            "There was an error cancelling the appointment. Please try again.",
+          className: "bg-red-500 text-white border-none",
+        });
+      }
+    } else if (type === "schedule") {
+      try {
+        await scheduleAppointment({
+          appointmentId: appointment._id,
+          primaryPhysician: values.primaryPhysician,
+          date: values.schedule,
+          email: user.email,
+        });
+        setIsLoading(false);
+        toast({
+          title: "Success",
+          description: "Successfully scheduled this appointment.",
+          className: "bg-green-500 text-white border-none",
+        });
+        // @ts-ignore
+        setOpen(false);
+      } catch (err) {
+        console.log(err);
+        setIsLoading(false);
+        toast({
+          title: "Error",
+          description:
+            "There was an error scheduling the appointment. Please try again.",
+          className: "bg-red-500 text-white border-none",
+        });
+      }
     }
   }
 
@@ -135,9 +221,7 @@ export function AppointmentForm({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
         <section className="mb-12 space-y-4">
-          <h1 className="text-3xl font-semibold">
-            {type === "edit" ? "Edit your appointment" : "New appointment"}
-          </h1>
+          <h1 className="text-3xl font-semibold">{title}</h1>
           {type === "create" && (
             <p className="text-dark-700">
               Request a new appointment in 10 seconds or{" "}
@@ -149,8 +233,9 @@ export function AppointmentForm({
               </Link>
             </p>
           )}
+          <p className="text-dark-700 mt-1">{desc}</p>
         </section>
-        {type !== "cancel" && (
+        {type !== "cancel" && type !== "cancel_by_the_user" && (
           <>
             <CustomFormField
               fieldType={FormFieldType.SELECT}
@@ -184,7 +269,11 @@ export function AppointmentForm({
               name="schedule"
               showTimeSelect
               dateFormat="MM/dd/yyyy - h:mm aa"
-              label="Expected date of an appointment"
+              label={`${
+                type === "create"
+                  ? "Expected date of an appointment"
+                  : "Date of an appointment"
+              }`}
               className="flex-grow"
             />
             <div className="flex flex-col gap-6 xl:flex-row xl:justify-between">
@@ -192,6 +281,7 @@ export function AppointmentForm({
                 fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
                 name="reason"
+                disabled={type === "schedule"}
                 label="Reason for appointment"
                 placeholder="Annual montly check-up"
                 className="flex-grow"
@@ -200,6 +290,7 @@ export function AppointmentForm({
                 fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
                 name="note"
+                disabled={type === "schedule"}
                 label="Additional comments/notes (optional)"
                 placeholder="Prefer afternoon appointments, if possible"
                 className="flex-grow"
@@ -207,12 +298,12 @@ export function AppointmentForm({
             </div>
           </>
         )}
-        {type === "cancel" && (
+        {(type === "cancel" || type === "cancel_by_the_user") && (
           <CustomFormField
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="cancellationReason"
-            label="Reason for cancelettion"
+            label="Reason for cancellation"
             placeholder="Urgent meeting came up"
             className="flex-grow"
           />
@@ -220,10 +311,14 @@ export function AppointmentForm({
         <SubmitButton
           isLoading={isLoading}
           className={`${
-            type === "cancel" ? "shad-danger-btn" : "shad-primary-btn"
+            type === "cancel" || type === "cancel_by_the_user"
+              ? "shad-danger-btn"
+              : "shad-primary-btn"
           } w-full`}
         >
-          {type === "cancel" ? "Cancel appointment" : "Submit and continue"}
+          {type === "cancel" || type === "cancel_by_the_user"
+            ? "Cancel appointment"
+            : "Submit and continue"}
         </SubmitButton>
       </form>
     </Form>
