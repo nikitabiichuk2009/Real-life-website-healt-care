@@ -54,7 +54,7 @@ export default function Home() {
 
           <section className="mb-12 space-y-4">
             <h1 className="text-3xl font-semibold">Hi there 👋</h1>
-            <p className="text-dark-700 flex flex-row gap-1">
+            <p className="text-dark-700 flex flex-col gap-2 md:flex-row md:gap-1">
               Get Started with appointments
               {userId && (
                 <p className="text-dark-700">

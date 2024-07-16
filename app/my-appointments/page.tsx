@@ -73,6 +73,7 @@ export default async function Appointments() {
                         alt="doctor"
                         width={30}
                         height={30}
+                        className="w-4 h-4 md:w-8 md:h-8"
                       />
                       {appointment.primaryPhysician}
                     </div>
