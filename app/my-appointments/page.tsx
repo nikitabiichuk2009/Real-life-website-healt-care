@@ -65,7 +65,7 @@ export default async function Appointments() {
                     key={appointment._id}
                     className="p-4 mb-4 rounded-xl border-green-500 border-2 flex flex-col gap-2"
                   >
-                    <div className="text-lg md:text-xl font-bold flex flex-row gap-2">
+                    <div className="text-[16px] whitespace-nowrap md:text-xl font-bold flex flex-row gap-2">
                       Appointment with{" "}
                       <Image
                         // @ts-ignore
