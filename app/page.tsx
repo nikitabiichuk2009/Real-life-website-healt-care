@@ -78,12 +78,12 @@ export default function Home() {
               <Button className="shad-primary-btn w-full">Sign In</Button>
             </Link>
           )}
-          <div className="text-[16px] leading-[18px] font-semibold mt-20 flex justify-between">
-            <p className="flex gap-1 text-dark-600 items-center justify-center">
+          <div className="font-semibold mt-20 flex justify-between items-center">
+            <p className="flex gap-1 text-dark-600 text-[14px] lg:text-[16px] lg:leading-[18px] items-center justify-center">
               © {new Date().getFullYear()} CarePulse by{" "}
               <Link
                 href={"https://nikita-biichuks-portfolio.vercel.app/"}
-                className="ease-in-out duration-300 text-sm transition-colors text-green-400 hover:text-green-500"
+                className="ease-in-out duration-300 text-[14px] lg:text-[16px] lg:leading-[18px] transition-colors text-green-400 hover:text-green-500"
               >
                 Nikita Biichuk
               </Link>
@@ -155,7 +155,7 @@ export default function Home() {
         height={1000}
         width={1000}
         alt="doctor"
-        className="side-img max-w-[50%]"
+        className="side-img max-w-[40%] lg:max-w-[50%]"
       />
     </div>
   );
