@@ -146,7 +146,7 @@ export default async function Appointments() {
         height={1000}
         width={1000}
         alt="doctor"
-        className="fixed right-0 top-0 h-full hidden object-cover 2xl:block max-w-[390px]"
+        className="fixed right-0 top-0 h-full hidden object-cover xl:block xl:max-w-[350px] 2xl:max-w-[400px]"
       />
     </div>
   );

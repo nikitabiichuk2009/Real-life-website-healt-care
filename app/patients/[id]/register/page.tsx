@@ -69,7 +69,7 @@ const Register = async ({ params: { id } }: SearchParamProps) => {
         height={1000}
         width={1000}
         alt=""
-        className="fixed right-0 top-0 h-full hidden object-cover 2xl:block max-w-[390px]"
+        className="fixed right-0 top-0 h-full hidden object-cover xl:block xl:max-w-[350px] 2xl:max-w-[400px]"
       />
     </div>
   );
