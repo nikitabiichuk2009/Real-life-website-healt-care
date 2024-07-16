@@ -71,8 +71,8 @@ export default async function Appointments() {
                         // @ts-ignore
                         src={doctor?.image}
                         alt="doctor"
-                        width={30}
-                        height={30}
+                        width={20}
+                        height={20}
                         className="w-4 h-4 md:w-8 md:h-8"
                       />
                       {appointment.primaryPhysician}
