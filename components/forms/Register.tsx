@@ -71,7 +71,8 @@ export function RegisterFrom({ user }: { user: any }) {
       setIsLoading(false);
       toast({
         title: "Error",
-        description: "",
+        description:
+          "Error collecting your details. Your phone number may already exist in our database.",
         className: "bg-red-500 text-white border-none",
       });
     }
